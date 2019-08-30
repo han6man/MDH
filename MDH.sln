@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopupNotifierDemoApp", "DemoApp\PopupNotifierDemoApp.csproj", "{833625E6-80AC-45E0-8AA4-06BDDEDBEA2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleTranslatorTest", "GoogleTranslatorTest\GoogleTranslatorTest.csproj", "{8BBA9409-4620-433C-8367-0B1C92909F05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,22 @@ Global
 		{833625E6-80AC-45E0-8AA4-06BDDEDBEA2F}.Release|x64.ActiveCfg = Release|x86
 		{833625E6-80AC-45E0-8AA4-06BDDEDBEA2F}.Release|x86.ActiveCfg = Release|x86
 		{833625E6-80AC-45E0-8AA4-06BDDEDBEA2F}.Release|x86.Build.0 = Release|x86
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Debug|x64.Build.0 = Debug|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Debug|x86.Build.0 = Debug|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Release|x64.ActiveCfg = Release|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Release|x64.Build.0 = Release|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Release|x86.ActiveCfg = Release|Any CPU
+		{8BBA9409-4620-433C-8367-0B1C92909F05}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
