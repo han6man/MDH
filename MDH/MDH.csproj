@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\enums.cs" />
     <Compile Include="DataBase\DBHealper.cs" />
     <Compile Include="Forms\PopupNotifier.cs">
       <SubType>Component</SubType>
@@ -72,9 +73,11 @@
     </Compile>
     <Compile Include="Strings\Encodings.cs" />
     <Compile Include="Strings\GoogleTranslator.cs" />
+    <Compile Include="Strings\Language.cs" />
+    <Compile Include="Strings\LanguageFamily.cs" />
     <Compile Include="Strings\StringDistance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strings\Translation.cs" />
+    <Compile Include="Nenwork\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Splash1.png" />
@@ -96,5 +99,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

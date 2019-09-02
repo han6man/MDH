@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace MDH.Strings
 {
@@ -16,8 +17,11 @@ namespace MDH.Strings
         private WebView webView;
         private WebSession webSession;
 
-        public string ToLng { get; set; }
-        public string FromLng { get; set; } = "auto";
+        public string SourceText { get; private set; }
+        public string TargetText { get; private set; }
+
+        public Language SourceLanguage { get; set; } = Language.Auto_Detect;
+        public Language TargetLanguage { get; set; } = Language.English;
 
         #region Constractors
         /// <summary>
@@ -25,6 +29,9 @@ namespace MDH.Strings
         /// </summary>
         public GoogleTranslator()
         {
+            this.SourceLanguage = Language.Auto_Detect;
+            this.TargetLanguage = Language.English;
+
             WebConfig webConfig = WebConfig.Default;
             if (!WebCore.IsInitialized)
             {
@@ -63,10 +70,10 @@ namespace MDH.Strings
         /// 
         /// </summary>
         /// <param name="toLng"></param>
-        public GoogleTranslator(string toLng)
+        public GoogleTranslator(Language TargetLanguage)
         {
-            ToLng = toLng;
-            FromLng = "auto";
+            this.SourceLanguage = Language.Auto_Detect;
+            this.TargetLanguage = TargetLanguage;
 
             WebConfig webConfig = WebConfig.Default;
             if (!WebCore.IsInitialized)
@@ -106,10 +113,10 @@ namespace MDH.Strings
         /// </summary>
         /// <param name="fromLng"></param>
         /// <param name="toLng"></param>
-        public GoogleTranslator(string fromLng, string toLng)
+        public GoogleTranslator(Language SourceLanguage, Language TargetLanguage)
         {
-            ToLng = toLng;
-            FromLng = fromLng;
+            this.SourceLanguage = SourceLanguage;
+            this.TargetLanguage = TargetLanguage;
 
             WebConfig webConfig = WebConfig.Default;
             if (!WebCore.IsInitialized)
@@ -146,6 +153,11 @@ namespace MDH.Strings
         #endregion
 
         #region Translating
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void WebView_LoadingFrameComplete(object sender, Awesomium.Core.FrameEventArgs e)
         {
             isMainFrame = e.IsMainFrame;
@@ -163,23 +175,15 @@ namespace MDH.Strings
                 isDomReady = true;
             }
         }
-
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="textToTranslate"></param>
-        /// <param name="fromLng"></param>
-        /// <param name="toLng"></param>
         /// <returns></returns>
-        public string Translate(string textToTranslate, string fromLng, string toLng)
+        private string GetHTML()
         {
-            ToLng = toLng;
-            FromLng = fromLng;
-
             isDomReady = false;
-            string t = null;
 
-            Uri url = new Uri(String.Format("https://translate.google.com/#view=home&op=translate&sl={0}&tl={1}&text={2}", fromLng, toLng, textToTranslate));
+            Uri url = new Uri($"https://translate.google.com/#view=home&op=translate&sl={this.SourceLanguage.Code}&tl={this.TargetLanguage.Code}&text={HttpUtility.UrlEncode(this.SourceText)}");
             webView.Source = url;
             //for refreshing webView.HTML
             webView.Source = webView.Source;
@@ -194,140 +198,22 @@ namespace MDH.Strings
                 WebCore.Update();
             }
 
-            t = Parse(webView.HTML);
-
-            while (t == null)
-            {
-                isDomReady = false;
-                webView.Source = url;
-                webView.Source = webView.Source;
-
-                while (!isDomReady)
-                {
-                    Thread.Sleep(100);
-                    // A Console application does not have a synchronization
-                    // context, thus auto-update won't be enabled on WebCore.
-                    // We need to manually call Update here.
-                    WebCore.Update();
-                }
-                t = Parse(webView.HTML);
-            }
-
-            if (t == null)
-            {
-                return "null";
-            }
-            return t;
+            return webView.HTML;
         }
-
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="textToTranslate"></param>
-        /// <param name="toLng"></param>
+        /// <param name="HTML"></param>
         /// <returns></returns>
-        public string Translate(string textToTranslate, string toLng)
-        {
-            ToLng = toLng;
-            FromLng = "auto";
-
-            isDomReady = false;
-            string t = null;
-
-            Uri url = new Uri(String.Format("https://translate.google.com/#view=home&op=translate&sl={0}&tl={1}&text={2}", "auto", toLng, textToTranslate));
-            webView.Source = url;
-            //for refreshing webView.HTML
-            webView.Source = webView.Source;
-
-            //waiting for loding html
-            while (!isDomReady)
-            {
-                Thread.Sleep(100);
-                // A Console application does not have a synchronization
-                // context, thus auto-update won't be enabled on WebCore.
-                // We need to manually call Update here.
-                WebCore.Update();
-            }
-
-            t = Parse(webView.HTML);
-
-            while (t == null)
-            {
-                isDomReady = false;
-                webView.Source = url;
-                webView.Source = webView.Source;
-
-                while (!isDomReady)
-                {
-                    Thread.Sleep(100);
-                    // A Console application does not have a synchronization
-                    // context, thus auto-update won't be enabled on WebCore.
-                    // We need to manually call Update here.
-                    WebCore.Update();
-                }
-                t = Parse(webView.HTML);
-            }
-
-            if (t == null)
-            {
-                return "null";
-            }
-            return t;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="textToTranslate"></param>
-        /// <returns></returns>
-        public string Translate(string textToTranslate)
-        {
-            isDomReady = false;
-            string t = null;
-
-            Uri url = new Uri(String.Format("https://translate.google.com/#view=home&op=translate&sl={0}&tl={1}&text={2}", FromLng, ToLng, textToTranslate));
-            webView.Source = url;
-            //for refreshing webView.HTML
-            webView.Source = webView.Source;
-
-            //waiting for loding html
-            while (!isDomReady)
-            {
-                Thread.Sleep(100);
-                // A Console application does not have a synchronization
-                // context, thus auto-update won't be enabled on WebCore.
-                // We need to manually call Update here.
-                WebCore.Update();
-            }
-
-            t = Parse(webView.HTML);
-
-            while (t == null)
-            {
-                isDomReady = false;
-                webView.Source = url;
-                webView.Source = webView.Source;
-
-                while (!isDomReady)
-                {
-                    Thread.Sleep(100);
-                    // A Console application does not have a synchronization
-                    // context, thus auto-update won't be enabled on WebCore.
-                    // We need to manually call Update here.
-                    WebCore.Update();
-                }
-                t = Parse(webView.HTML);
-            }
-
-            if (t == null)
-            {
-                return "null";
-            }
-            return t;
-        }
-
         private string Parse(string HTML)
         {
+            if (HTML == null || HTML == string.Empty)
+            {
+                //HTML = null;
+                //throw new Exception("string HTML null or empty");
+                return HTML;
+            }
+
             int substringIndex = HTML.IndexOf("<span title=\"\">");
             if (substringIndex == -1)
             {
@@ -348,59 +234,77 @@ namespace MDH.Strings
 
             return HTML;
         }
-        #endregion        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private string Translate()
+        {
+            if (this.SourceLanguage == null)
+            {
+                this.SourceLanguage = Language.Auto_Detect;
+            }
+            if (this.TargetLanguage == Language.Auto_Detect || this.TargetLanguage == null)
+            {
+                this.TargetLanguage = Language.English;
+            }
 
-        //#region IDisposable Support
-        //private bool disposedValue = false; // To detect redundant calls
+            this.TargetText = null;
 
-        //// реализация интерфейса IDisposable.
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (!disposedValue)
-        //    {
-        //        if (disposing)
-        //        {
-        //            // TODO: dispose managed state (managed objects).
-        //            // Освобождаем управляемые ресурсы
+            this.TargetText = Parse(GetHTML());
 
-        //        }
+            while (this.TargetText == null)
+            {
+                this.TargetText = Parse(GetHTML());
+            }
 
-        //        // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-        //        // TODO: set large fields to null.
-        //        // освобождаем неуправляемые объекты
+            return this.TargetText;
+        }
 
-        //        //webView.Stop();
-        //        //webSession.Release();
-        //        //webView.Dispose();
-        //        //WebCore.Update();
-        //        //WebCore.Shutdown();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="SourceText"></param>
+        /// <param name="SourceLanguage"></param>
+        /// <param name="TargetLanguage"></param>
+        /// <returns></returns>
+        public string Translate(string SourceText, Language SourceLanguage, Language TargetLanguage)
+        {
+            this.SourceText = SourceText;
 
-        //        disposedValue = true;
-        //    }
-        //}
+            this.SourceLanguage = SourceLanguage;
+            this.TargetLanguage = TargetLanguage;
 
-        //// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        //// ~GoogleTranslate() {
-        ////   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        ////   Dispose(false);
-        //// }
+            return Translate();
+        }
 
-        //// This code added to correctly implement the disposable pattern.
-        //public void Dispose()
-        //{
-        //    // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //    Dispose(true);
-        //    // TODO: uncomment the following line if the finalizer is overridden above.
-        //    // GC.SuppressFinalize(this);
-        //    // подавляем финализацию
-        //    GC.SuppressFinalize(this);
-        //}
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="SourceText"></param>
+        /// <param name="TargetLanguage"></param>
+        /// <returns></returns>
+        public string Translate(string SourceText, Language TargetLanguage)
+        {
+            this.SourceText = SourceText;
 
-        //// Деструктор
-        //~GoogleTranslate()
-        //{
-        //    Dispose(false);
-        //}
-        //#endregion
+            this.SourceLanguage = Language.Auto_Detect;
+            this.TargetLanguage = TargetLanguage;
+
+            return Translate();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="SourceText"></param>
+        /// <returns></returns>
+        public string Translate(string SourceText)
+        {
+            this.SourceText = SourceText;
+
+            return Translate();
+        }
+        #endregion
     }
 }
