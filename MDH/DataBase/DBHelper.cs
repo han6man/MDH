@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MDH.DataBase
 {
-    public static class DBHealper
+    public static class DBHelper
     {
         // Хранение изображений в MS SQL в двоичном формате в ячейке с типом «image»
         // в двоичном формате данные в базе занимают места меньше примерно в 100 раз по сравнению с методом с типом «varchar»

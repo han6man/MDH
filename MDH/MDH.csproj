@@ -32,6 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Awesomium.Core, Version=1.7.5.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86" />
+    <Reference Include="HtmlAgilityPack, Version=1.11.12.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.12\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -47,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\enums.cs" />
-    <Compile Include="DataBase\DBHealper.cs" />
+    <Compile Include="DataBase\DBHelper.cs" />
     <Compile Include="Forms\PopupNotifier.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -72,14 +75,24 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Strings\Encodings.cs" />
-    <Compile Include="Strings\GoogleTranslator.cs" />
-    <Compile Include="Strings\Language.cs" />
-    <Compile Include="Strings\LanguageFamily.cs" />
+    <Compile Include="Strings\StringHelper.cs" />
+    <Compile Include="Strings\Translation\GoogleTranslator.cs" />
+    <Compile Include="Strings\Translation\Language.cs" />
+    <Compile Include="Strings\Translation\LanguageFamily.cs" />
+    <Compile Include="Strings\Translation\Meaning.cs" />
+    <Compile Include="Strings\Translation\OptionalTranslation.cs" />
+    <Compile Include="Strings\Translation\PartOfSpeech.cs" />
+    <Compile Include="Strings\Translation\SourceTextDescription.cs" />
     <Compile Include="Strings\StringDistance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nenwork\Translation.cs" />
+    <Compile Include="Strings\Translation\Synonym.cs" />
+    <Compile Include="Strings\Translation\TargetTextDescription.cs" />
+    <Compile Include="Strings\Translation\Text.cs" />
+    <Compile Include="Strings\Translation\Word.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\Splash1.png" />
     <None Include="Resources\Grip.png" />
     <None Include="Resources\icon.ico" />
